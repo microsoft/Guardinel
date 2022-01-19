@@ -37,7 +37,6 @@ class Config(ABC):
 
 
 class ConfigBuilder(ABC):
-
     """
     Abstract builder class which should be implemented by the wrappers to build the config
     """

@@ -15,7 +15,7 @@ class Action(Task, ABC):
     """
     Abstract class that defines the basic methods to define an action
 
-    Action represents the tasks that SHIELD takes intuitively which improves the code/system/process.
+    Action represents the tasks that Guardinel takes intuitively which improves the code/system/process.
     Action should never block the PR gate and it should only return one of the following values:
     NOTIFY/SUCCESS/FAIL - Post comments to the PR to inform the executed action.
     NO_ACTION - For some reasons, nothing got changed by the action. No notification will be sent to the PR/user

@@ -32,4 +32,5 @@ class UnknownMetricTypeError(MetricsError):
     def __init__(self, value):
         super().__init__()
         self.message = 'Unknown value type {} encountered while adding metrics!'.format(type(value))
-        self.suggestion = 'Please reach out to SHIELD team to add an implementation for the type {}'.format(type(value))
+        self.suggestion = 'Please reach out to Guardinel team to add an implementation for the type {}'\
+            .format(type(value))

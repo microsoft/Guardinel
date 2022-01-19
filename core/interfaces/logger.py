@@ -32,4 +32,3 @@ class AbstractLogger(ABC):
 
     def debug_enabled(self):
         return self.__debug
-

@@ -19,7 +19,7 @@ class Constants:
     # Gate will pass always.
     NOTIFY = 'NOTIFY'
 
-    # Flag that marks that no action was taken as part of the SHIELD ACTION execution
+    # Flag that marks that no action was taken as part of the ACTION execution
     # Gate will pass always.
     NO_ACTION = 'NO_ACTION'
 

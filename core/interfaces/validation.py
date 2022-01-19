@@ -7,7 +7,7 @@ from core.utils.map import resources
 
 
 class Validation(ABC):
-    """ Class to represent all Validations in the SHIELD"""
+    """ Class to represent all Validations"""
     __logger = resources.get('LOGGER')
 
     def logger(self):

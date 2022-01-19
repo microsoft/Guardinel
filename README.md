@@ -46,8 +46,8 @@ python3 ./release-velocity/automation/compliance/policy_checker.py -p policy_nam
 ```
 
 ## Execution flow
-1. SHIELD is invoked using a driver script (policy_checker.py) to which we will be passing a set of policies/actions to execute. Driver script will build a config object using the cmdline params
-2. ConcurrentExecutor will evaluate all the overrides attached to the policies/actions and retains the value until the shield execution is completed
+1. Guardinel is invoked using a driver script (policy_checker.py) to which we will be passing a set of policies/actions to execute. Driver script will build a config object using the cmdline params
+2. ConcurrentExecutor will evaluate all the overrides attached to the policies/actions and retains the value until the Guardinel execution is completed
 3. ConcurrentExecutor will execute the Policy/Action in threads. Each thread will 
      - check if any of the overrides is evaluated to true. If Yes, return resuls as OVERRIDEN
      - invoke the execute method of the policy/action, if it is not evaluated to OVERRIDEN
@@ -56,19 +56,19 @@ python3 ./release-velocity/automation/compliance/policy_checker.py -p policy_nam
 7. Once the result is received back at driver script, the script checks if there are any failed policies. If yes, it exits with 1 which will fails the gate. If not, exits with code 0 which passes the gate.
 
 # Basic components
-SHIELD comprises the following basic components
+Guardinel comprises the following basic components
 - Task
     - Abstract class that defines the skeleton of the policies
     - Implementations should override execute() method to validate the PR for a specific condition. Ex: Bug jail policy validates if the team who raised the PR is in bug jail or not.
 - Action
-    - Abstract sub-class of Task that defines the actions taken by the shield
+    - Abstract sub-class of Task that defines the actions taken by the Guardinel
     - Proactive changes that could reduce the opex work will be its implementation. Ex: Attach ECS work item to the PR, Clone the bug to the next release train
     - Actions will always return either NO_ACTION or NOTIFY.
     - Actions can be made a callback action for a task by adding its identifier in the task's actions() method
 - Override
     - Abstract class that defines an override for a task/action 
-    - Override are specific conditions on which shield will make an exception on certain policies
-    - Overrides are configured within the policies. If an override is configured in the shield cmdline param, it will be considered as a global override which can override all the policies if evaluated to true
+    - Override are specific conditions on which Guardinel will make an exception on certain policies
+    - Overrides are configured within the policies. If an override is configured in the Guardinel cmdline param, it will be considered as a global override which can override all the policies if evaluated to true
 - Notifier
     - Abstract class that defines a notifier
     - The notifiers are invoked after all the policies have completed their execution

@@ -1,14 +1,13 @@
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT License.
 
-from abc import ABC, abstractmethod
-
-from core.exceptions import *
+from core.exceptions import UnknownMetricTypeError
 from core.interfaces.metrics import Metrics
 
 
 class StringMetrics(Metrics):
     """ Represents the string values """
+
     def __init__(self, name, data):
         super().__init__(name, data)
 
@@ -23,6 +22,7 @@ class StringMetrics(Metrics):
 
 class IntegerMetrics(Metrics):
     """ Represents the metrics that are of number type and can be modified """
+
     def __init__(self, name, data):
         super().__init__(name, data)
 
