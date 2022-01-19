@@ -28,6 +28,10 @@ class Config(ABC):
     def get_notifiers(self):
         raise NotImplementedError()
 
+    @abstractmethod
+    def get_instances(self):
+        raise NotImplementedError()
+
     def logger(self):
         return self.__logger
 
