@@ -57,3 +57,7 @@ def put_value(root, keys: list, value):
 
 def get_anchor(anchor_text, anchor_href):
     return '<a href="{}">{}</a>'.format(anchor_href, anchor_text)
+
+
+def is_empty(data):
+    return data is None or not data or len(data) == 0 or data == ''
