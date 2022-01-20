@@ -3,7 +3,7 @@
 
 from core.api.caller import get
 from api_client.ado.endpoints import endpoint_map
-from core.api.interfaces.repository_client import RepositoryApiClientInterface
+from core.api.interfaces.repository_api_client import RepositoryApiClientInterface
 
 
 class AdoRepositoryClient(RepositoryApiClientInterface):
@@ -36,7 +36,7 @@ class AdoRepositoryClient(RepositoryApiClientInterface):
         Returns the metadata on the given commit id
 
         Commit metadata contains info on author, committer, pusher, commit description, parent commit id,
-        links to changes introduced in the commit, etc
+        links to file-changes that are introduced in the commit, etc
         """
         self.__logger.debug(self.__name, 'fetching metadata for commit id: {}'.format(commit_id))
         endpoint = endpoint_map['commit'].format(
