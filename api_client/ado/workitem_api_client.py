@@ -7,11 +7,12 @@ from api_client.ado.constants import ADOConstants
 from api_client.exceptions import FailedToAttachWorkItemError, FailedToUpdateFieldsError
 from core.api.caller import get, patch, post
 from api_client.ado.endpoints import endpoint_map
+from core.api.interfaces.workitem_api_client import FieldValueObject, WorkItemApiClient
 from core.exceptions import APICallFailedError
 from core.utils.map import resources
 
 
-class FieldValueObject:
+class AdoFieldValueObject(FieldValueObject):
     """
     Object that will be used while making updates to a list of work items using patch calls
     """
@@ -38,7 +39,7 @@ class FieldValueObject:
         return json.dumps(self.payload)
 
 
-class WorkItemApiClient:
+class AdoWorkItemClient(WorkItemApiClient):
     __logger = resources.get('LOGGER')
     __name = 'WorkItemApiClient'
 

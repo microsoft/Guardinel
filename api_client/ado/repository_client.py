@@ -6,7 +6,7 @@ from api_client.ado.endpoints import endpoint_map
 from core.api.interfaces.repository_client import RepositoryApiClientInterface
 
 
-class RepositoryClient(RepositoryApiClientInterface):
+class AdoRepositoryClient(RepositoryApiClientInterface):
 
     def __init__(self):
         super().__init__()

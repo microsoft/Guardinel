@@ -10,7 +10,7 @@ from core.api.interfaces.pr_api_client import PullRequestApiClientInterface
 from core.utils.map import resources
 
 
-class PullRequestClient(PullRequestApiClientInterface):
+class AdoPullRequestClient(PullRequestApiClientInterface):
     __logger = resources.get('LOGGER')
     __name = 'PullRequestClient'
 
