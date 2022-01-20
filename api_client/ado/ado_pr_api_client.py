@@ -14,77 +14,76 @@ class AdoPullRequestClient(PullRequestApiClientInterface):
     __logger = resources.get('LOGGER')
     __name = 'PullRequestClient'
 
-    def __init__(self, entity):
+    def __init__(self):
         super().__init__()
-        self.entity = entity
-        self.endpoint = endpoint_map['pr_by_id'].format(entity.org, entity.project, entity.pr_num, entity.ado_version)
         self.__data = None
         self.__comment_threads = None
         self.parent_ids = None
         self.changed_lines = []
         self.__changed_files_info = []
 
-    def data(self):
+    def data(self, entity):
         if self.__data is None:
-            self.__logger.info(self.__name, 'Fetching Pull-Request metadata for PR {}...'.format(self.entity.pr_num))
-            self.__data = get(self.endpoint, self.entity.pat)
+            endpoint = endpoint_map['pr_by_id'].format(entity.org, entity.project, entity.pr_num,
+                                                       entity.ado_version)
+            self.__logger.info(self.__name, 'Fetching Pull-Request metadata for PR {}...'.format(entity.pr_num))
+            self.__data = get(endpoint, entity.pat)
         return self.__data
 
-    def get_creator(self):
-        return self.data()['createdBy']
+    def get_creator(self, entity):
+        return self.data(entity)['createdBy']
 
-    def get_creator_alias(self):
-        return self.data()['createdBy']['uniqueName']
+    def get_creator_alias(self, entity):
+        return self.data(entity)['createdBy']['uniqueName']
 
-    def get_work_items(self):
+    def get_work_items(self, entity):
         """ Retrieves the work-items tied to the pull request """
-        return self.entity.linked_work_items()
+        return entity.linked_work_items()
 
-    def get_comment_threads(self):
+    def get_comment_threads(self, entity):
         if self.__comment_threads is None:
-            entity = self.entity
+            entity = entity
             self.__logger.info(self.__name, "Fetching Pull-Request comment threads for PR {}...".format(entity.pr_num))
             endpoint = endpoint_map['pr_comments'].format(entity.org, entity.project, entity.repo(), entity.pr_num)
             self.__comment_threads = get(endpoint, entity.pat)
         return self.__comment_threads
 
-    def get_commits(self):
-        endpoint = endpoint_map['pr_commits'].format(self.entity.org,
-                                                     self.entity.project,
-                                                     self.entity.repo(),
-                                                     self.entity.pr_num,
-                                                     self.entity.ado_version)
-        resp = get(endpoint, self.entity.pat)
+    def get_commits(self, entity):
+        endpoint = endpoint_map['pr_commits'].format(entity.org,
+                                                     entity.project,
+                                                     entity.repo(),
+                                                     entity.pr_num,
+                                                     entity.ado_version)
+        resp = get(endpoint, entity.pat)
         return resp
 
-    @staticmethod
-    def get_diff(_entity):
+    def get_diff(self, entity):
         """
         Returns the files modified in the given entity
         """
-        endpoint = endpoint_map['ado_diff_by_commit'].format(_entity.org, _entity.project, _entity.repo())
+        endpoint = endpoint_map['ado_diff_by_commit'].format(entity.org, entity.project, entity.repo())
         params = {
-            "baseVersion": _entity.target_branch().replace('refs/heads/', ''),  # develop branch
+            "baseVersion": entity.target_branch().replace('refs/heads/', ''),  # develop branch
             "baseVersionType": "branch",
-            "targetVersion": _entity.source_branch().replace('refs/heads/', ''),  # dev's private branch
+            "targetVersion": entity.source_branch().replace('refs/heads/', ''),  # dev's private branch
             "targetVersionType": "branch",
-            "api-version": _entity.ado_version
+            "api-version": entity.ado_version
         }
-        resp = get(endpoint, _entity.pat, params)
+        resp = get(endpoint, entity.pat, params)
         return resp
 
-    def changes(self, repo_id, commit_id):
+    def changes(self, entity, repo_id, commit_id):
         if self.parent_ids is None:
-            entity = self.entity
+            entity = entity
             endpoint = endpoint_map['commit'].format(entity.org, entity.project, repo_id, commit_id, entity.ado_version)
             json_obj = get(endpoint, entity.pat)
             self.parent_ids = json_obj['parents']
         self.__logger.debug(self.__name, self.parent_ids)
         return self.parent_ids
 
-    def get_file_add_diff(self, diff_parameters, repo_id):
+    def get_file_add_diff(self, entity, diff_parameters, repo_id):
         if not self.changed_lines:
-            entity = self.entity
+            entity = entity
             endpoint = endpoint_map['get_file_diff'].format(entity.org, entity.project, diff_parameters, repo_id)
             json_obj = get(endpoint, entity.pr_approver_key)
             blocks = json_obj['blocks']
@@ -95,9 +94,8 @@ class AdoPullRequestClient(PullRequestApiClientInterface):
                     visited_lines.append(block['mLine'])
         return self.changed_lines
 
-    def changed_files_info(self):
+    def changed_files_info(self, entity):
         if not self.__changed_files_info:
-            entity = self.entity
             endpoint = endpoint_map['pr_commits'].format(entity.org, entity.project, entity.repo(), entity.pr_num,
                                                          entity.ado_version)
             commits_obj = get(endpoint, entity.pat)
@@ -114,15 +112,15 @@ class AdoPullRequestClient(PullRequestApiClientInterface):
                         visited_files.append(change['item']['path'])
         return self.__changed_files_info
 
-    def add_reviewer(self, reviewer, vote=0, is_required=True):
+    def add_reviewer(self, entity, reviewer, vote=0, is_required=True):
         response = None
         try:
-            url = endpoint_map['approve_pr_by_id'].format(self.entity.org, self.entity.project, self.entity.repo(),
-                                                          self.entity.pr_num, reviewer)
-            querystring = {"api-version": self.entity.ado_version}
+            url = endpoint_map['approve_pr_by_id'].format(entity.org, entity.project, entity.repo(),
+                                                          entity.pr_num, reviewer)
+            querystring = {"api-version": entity.ado_version}
             body = {"vote": vote, "isRequired": is_required}
 
-            response = put(url, self.entity.pat, querystring, payload=json.dumps(body))
+            response = put(url, entity.pat, querystring, payload=json.dumps(body))
             self.__logger.info(self.__name, "Added {}-reviewer {} successfully with vote {}!"
                                .format('required' if is_required else 'optional', reviewer, vote))
         except Exception:
