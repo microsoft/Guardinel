@@ -43,40 +43,40 @@ class AdoWorkItemClient(WorkItemApiClient):
     __logger = resources.get('LOGGER')
     __name = 'WorkItemApiClient'
 
-    def __init__(self, entity):
-        self.entity = entity
+    def __init__(self):
+        super().__init__()
 
-    def get_work_items(self, items: list):
+    def get_work_items(self, entity, items: list):
         items = []
         for wi in items:
-            items.append(self.get_work_item_by_id(wi))
+            items.append(self.get_work_item_by_id(entity, wi))
         return items
 
-    def get_work_item_by_id(self, item_id):
-        endpoint = endpoint_map['work_item_by_id'].format(self.entity.org, item_id)
-        wi_data = get(endpoint, self.entity.pat)
+    def get_work_item_by_id(self, entity, item_id):
+        endpoint = endpoint_map['work_item_by_id'].format(entity.org, item_id)
+        wi_data = get(endpoint, entity.pat)
         return wi_data
 
-    def get_work_item_by_id_with_relations(self, work_item_id):
-        endpoint = endpoint_map['work_item_by_id_with_relations'].format(self.entity.org, work_item_id)
-        wi_data = get(endpoint, self.entity.pat)
+    def get_work_item_by_id_with_relations(self, entity, work_item_id):
+        endpoint = endpoint_map['work_item_by_id_with_relations'].format(entity.org, work_item_id)
+        wi_data = get(endpoint, entity.pat)
         return wi_data
 
-    def get_work_items_by_query_id(self, query_id):
+    def get_work_items_by_query_id(self, entity, query_id):
         """
         retrieves query metadata from the query_id and returns the list of workitems
         """
         endpoint = endpoint_map['ado_query_by_id'] \
-            .format(self.entity.org, self.entity.project, query_id, self.entity.ado_version)
+            .format(entity.org, entity.project, query_id, entity.ado_version)
 
         # retrieve query metadata
-        query_md = get(endpoint, self.entity.pat)
+        query_md = get(endpoint, entity.pat)
         if query_md is None:
             raise ValueError("Couldn't retrieve query metadata for query_id : {}".format(query_id))
 
         # retrieve list of workitems which is the result of the query
         self.__logger.info(self.__name, "Query Filter Title: '{}'".format(query_md['name']))
-        wi_results = get(query_md['_links']['wiql']['href'], self.entity.pat)
+        wi_results = get(query_md['_links']['wiql']['href'], entity.pat)
 
         if 'workItems' not in wi_results or wi_results['workItems'] is None or len(wi_results['workItems']) == 0:
             self.__logger.info(self.__name, 'no WorkItems found for query {}: {}'.format(query_id, query_md['name']))
@@ -105,26 +105,26 @@ class AdoWorkItemClient(WorkItemApiClient):
         }]
         try:
             response = patch(url, pr_entity.pat, querystring, json.dumps(payload))
-        except APICallFailedError as e:
+        except APICallFailedError:
             raise FailedToAttachWorkItemError(item_id)
         self.__logger.info(self.__name, "Attached work item successfully!" + response.text)
 
-    def create(self, work_item_type, payload,
+    def create(self, entity, work_item_type, payload,
                query_string='{}',
                content_type='application/json-patch+json'):
         endpoint = endpoint_map['create_work_item'] \
-            .format(self.entity.org, self.entity.project, work_item_type, self.entity.ado_version)
+            .format(entity.org, entity.project, work_item_type, entity.ado_version)
 
         resp = post(endpoint=endpoint,
-                    pat=self.entity.pat,
+                    pat=entity.pat,
                     query_str=query_string,
                     payload=payload,
                     content_type=content_type)
 
         return resp
 
-    def linked_parent_work_items(self, work_item_id):
-        json_response = self.get_work_item_by_id_with_relations(work_item_id)
+    def linked_parent_work_items(self, entity, work_item_id):
+        json_response = self.get_work_item_by_id_with_relations(entity, work_item_id)
         relations = json_response['relations']
         parent = []
         for relation in relations:

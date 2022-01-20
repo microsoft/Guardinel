@@ -33,28 +33,28 @@ class WorkItemApiClient(ABC):
         self.__logger = resources.get('LOGGER')
 
     @abstractmethod
-    def get_work_items(self, items: list):
+    def get_work_items(self, entity, items: list):
         """
         Retrieves the work item metadata for all the work-items ids provided in the param
         """
         raise NotImplementedError()
 
     @abstractmethod
-    def get_work_item_by_id(self, item_id):
+    def get_work_item_by_id(self, entity, item_id):
         """
         Retrieves the work item metadata for the given work-item id provided in the param
         """
         raise NotImplementedError()
 
     @abstractmethod
-    def get_work_item_by_id_with_relations(self, work_item_id):
+    def get_work_item_by_id_with_relations(self, entity, work_item_id):
         """
         Retrieves the work item metadata alone with the relations like PRs, links, wikis, etc
         """
         raise NotImplementedError()
 
     @abstractmethod
-    def get_work_items_by_query_id(self, query_id):
+    def get_work_items_by_query_id(self, entity, query_id):
         """
         retrieves query metadata from the query_id and returns the list of workitems
         """
@@ -68,7 +68,16 @@ class WorkItemApiClient(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def linked_parent_work_items(self, work_item_id):
+    def create(self, entity, work_item_type, payload,
+               query_string='{}',
+               content_type='application/json-patch+json'):
+        """
+        Creates a new work item using the given payload
+        """
+        raise NotImplementedError()
+
+    @abstractmethod
+    def linked_parent_work_items(self, entity, work_item_id):
         """
         Returns the parent work items of the given work item id
         """
