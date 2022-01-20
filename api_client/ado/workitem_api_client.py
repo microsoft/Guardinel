@@ -6,7 +6,7 @@ import json
 from api_client.ado.constants import ADOConstants
 from api_client.exceptions import FailedToAttachWorkItemError, FailedToUpdateFieldsError
 from core.api.caller import get, patch, post
-from api_client.ado.config import endpoint_map
+from api_client.ado.endpoints import endpoint_map
 from core.exceptions import APICallFailedError
 from core.utils.map import resources
 

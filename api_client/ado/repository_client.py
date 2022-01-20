@@ -2,7 +2,7 @@
 # Licensed under the MIT License.
 
 from core.api.caller import get
-from api_client.ado.config import endpoint_map
+from api_client.ado.endpoints import endpoint_map
 from core.api.interfaces.repository_client import RepositoryApiClientInterface
 
 

@@ -5,7 +5,7 @@ import json
 
 from api_client.exceptions import FailedToAddReviewerError
 from core.api.caller import get, put
-from api_client.ado.config import endpoint_map
+from api_client.ado.endpoints import endpoint_map
 from core.api.interfaces.pr_api_client import PullRequestApiClientInterface
 from core.utils.map import resources
 
