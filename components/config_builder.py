@@ -1,6 +1,6 @@
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT License.
-from components.classes import instance_map
+
 from core.interfaces.config import Config, ConfigBuilder
 from core.utils.helper import get_values, is_empty
 
