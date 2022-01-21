@@ -8,7 +8,7 @@ from datetime import datetime
 
 from core.exceptions import GuardinelError, APICallFailedError
 from core.utils.constants import Constants
-from core.utils.helper import is_empty
+from core.utils.helper import is_empty, get_values
 from core.utils.map import resources
 
 
@@ -116,7 +116,7 @@ class ConcurrentExecutor:
             return
 
         callback_results = {}
-        for callback in self.config.get_instances(task.callbacks()):
+        for callback in get_values(self.config.class_map, task.callbacks()):
             self.__logger.info(self.__name, '[{}] Executing the action {} on result {}'
                                .format(task.name(), callback.name(), task_result))
             try:

@@ -13,8 +13,8 @@ class Config(ABC):
     """
     __logger = resources.get('LOGGER')
 
-    def __init__(self):
-        self.__class_map = None
+    def __init__(self, class_map):
+        self.class_map = class_map
 
     @abstractmethod
     def get_tasks(self):
@@ -31,24 +31,6 @@ class Config(ABC):
     @abstractmethod
     def get_notifiers(self):
         raise NotImplementedError()
-
-    def get_instances(self, names: list):
-        """
-        Returns a list of instances identifies by the given names
-        """
-        if is_empty(self.__class_map):
-            raise
-
-        instances = []
-        for name in names:
-            inst = self.__class_map.get(name)
-            if inst is None:
-                err = 'module {} not found in class_map! Check spelling! ' \
-                      'If new entity, please add an entry in the class_map'.format(name)
-                raise ModuleNotFoundError(err)
-            instances.append(inst)
-
-        return instances
 
     def logger(self):
         return self.__logger

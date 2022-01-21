@@ -1,7 +1,26 @@
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT License.
 
-# Holds the util functions used by both core and policy_checker
+# Holds the util functions used by both core and guardinel
+
+
+def get_values(self, values_map, names: list):
+    """
+    Returns a list of values identified by the given names from the values map
+    """
+    if is_empty(values_map):
+        raise KeyError('values_map is entity!')
+
+    instances = []
+    for name in names:
+        inst = values_map.get(name)
+        if inst is None:
+            err = 'Key {} not found in the values_map'.format(name)
+            raise KeyError(err)
+        instances.append(inst)
+
+    return instances
+
 
 def get_value(values, keys: list, default=None):
     """
