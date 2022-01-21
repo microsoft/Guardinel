@@ -6,7 +6,7 @@ import traceback
 from concurrent import futures
 from datetime import datetime
 
-from core.exceptions import PolicyError, APICallFailedError
+from core.exceptions import GuardinelError, APICallFailedError
 from core.utils.constants import Constants
 from core.utils.helper import is_empty
 from core.utils.map import resources
@@ -88,7 +88,7 @@ class ConcurrentExecutor:
                                 .format(task.name(), e))
             self.__logger.error(self.__name, traceback.format_exc())
             result = task.result(Constants.API_CALL_ERROR, error=e)
-        except PolicyError as e:
+        except GuardinelError as e:
             self.__logger.error(self.__name, "Unhandled policy error while executing the action {}: {}"
                                 .format(task.name(), e))
             self.__logger.error(self.__name, traceback.format_exc())

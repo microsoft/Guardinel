@@ -1,7 +1,7 @@
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT License.
 
-class PolicyError(Exception):
+class GuardinelError(Exception):
     """
     Parent error class for all the exceptions thrown by the system
     """
@@ -13,7 +13,7 @@ class PolicyError(Exception):
         self.suggestion = suggestion
 
 
-class APICallFailedError(PolicyError):
+class APICallFailedError(GuardinelError):
     """
     Exception thrown when call to an API endpoint fails
     """
@@ -23,7 +23,7 @@ class APICallFailedError(PolicyError):
         self.suggestion = 'Could be an intermittent issue. Please re-queue the gate again after an hour.'
 
 
-class MetricsError(PolicyError):
+class MetricsError(GuardinelError):
     """ Parent class for all metrics error """
     pass
 
@@ -34,3 +34,13 @@ class UnknownMetricTypeError(MetricsError):
         self.message = 'Unknown value type {} encountered while adding metrics!'.format(type(value))
         self.suggestion = 'Please reach out to Guardinel team to add an implementation for the type {}'\
             .format(type(value))
+
+
+class DependencyInjectionError(GuardinelError):
+    """
+    Error that is thrown when dependency injection for a key is not found
+    """
+    def __init__(self, key):
+        super().__init__()
+        self.message = 'No dependency is injected for the key : {}'.format(key)
+        self.suggestion = 'Please update the dependency mapping for {} in DependencyInjector'.format(key)

@@ -12,3 +12,7 @@ class ClientMapper(ABC):
     @abstractmethod
     def config(self):
         raise NotImplementedError('Please provide a mapping of api implementations!')
+
+    @abstractmethod
+    def get(self, key):
+        raise NotImplementedError('Please provide a mapping of api implementations!')
