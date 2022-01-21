@@ -19,7 +19,7 @@ class Task(ABC):
         self.metrics = MetricsData(self.name())
 
     @abstractmethod
-    def execute(self, __input):
+    def execute(self, input_entity):
         raise NotImplementedError()
 
     @abstractmethod
