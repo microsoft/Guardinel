@@ -20,14 +20,15 @@ class PullRequestEntity(InputEntity):
     """
     __name = 'PullRequestEntity'
 
-    def __init__(self, org, proj, version='6.0'):
+    def __init__(self):
         self.pr_num = None
         self.pat = None
         self.user_id = None
         self.pipeline_type = None
-        self.org = org
-        self.project = proj
-        self.ado_version = version
+        self.org = None
+        self.project = None
+        self.ado_version = None
+
         self.__metadata = None
         self.__work_items = None
         self.__work_items_md_map = None
