@@ -18,3 +18,6 @@ class ADOClientMapper(ClientMapper):
 
     def config(self):
         return ADOClientMapper.client_mapper
+
+    def get(self, key):
+        return self.config().get(key)
