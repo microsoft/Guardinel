@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 from core.interfaces.task import Task
 from core.utils.constants import Constants
 
@@ -11,7 +14,7 @@ class HelloWorldPolicy(Task):
         return self.result(Constants.SUCCESS)
 
     def overrides(self):
-        return []
+        return ['approval_override']
 
     def name(self):
         return 'hello_world_policy'
