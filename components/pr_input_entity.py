@@ -104,7 +104,7 @@ class PullRequestEntity(InputEntity):
 
     def linked_work_items_metadata_map(self):
         if self.__work_items_md_map is None:
-            wi_client = self.api_client_mapper.get(APIConfigConstants.PULL_REQUEST_API_CLIENT)
+            wi_client = self.api_client_mapper.get(APIConfigConstants.WORK_ITEM_API_CLIENT)
             self.__work_items_md_map = dict()
             self.logger().info(self.__name, 'Fetching metadata of work-items linked to the PR {}...\n'
                                .format(self.pr_num))

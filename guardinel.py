@@ -5,6 +5,7 @@ import getopt
 import sys
 
 from components.classes import instances_map
+from components.pr_input_entity import PullRequestEntity
 from components.utils.helper import pr_needs_block
 from core.concurrent_executor import ConcurrentExecutor
 from core.utils.helper import is_empty
@@ -20,7 +21,7 @@ __tag = 'PolicyComplianceChecker'
 
 
 def parse_args(args_list):
-    __entity = DependencyInjector.get(DependencyInjector.Constants.INPUT_ENTITY)
+    __entity = PullRequestEntity()
     __config_builder = DependencyInjector.get(DependencyInjector.Constants.CONFIG_BUILDER)
 
     __config_builder.with_instances_map(instances_map)
@@ -105,19 +106,24 @@ def parse_args(args_list):
 def validate_entity(__entity):
     """ validates the entity for the required attributes """
     if is_empty(__entity.pr_num):
-        __logger.error(__tag, "PR num is missing!! Use the arg: '-i <pr_num>'")
         help_info()
         raise ValueError("PR num is missing!! Use the arg: '-i <pr_num>'")
 
     if is_empty(__entity.pat):
-        __logger.error(__tag, "PAT is missing!! Use the arg: '-d <PAT>'")
         help_info()
         raise ValueError("PAT is missing!! Use the arg: '-d <PAT>'")
 
-    if is_empty(__entity.pipeline_type) or __entity.pipeline_type not in ('android', 'ios', 'tmp', 'maglev'):
-        __logger.error(__tag, "Invalid pipeline type!! Use the arg: '-t <android/ios>'")
+    if is_empty(__entity.ado_version):
         help_info()
-        raise ValueError("Pipeline type is invalid!! Use the arg: '-t <android/ios>'")
+        raise ValueError("ado_version is missing!! Use the arg: '-c <version>'")
+
+    if is_empty(__entity.org):
+        help_info()
+        raise ValueError("org is missing!! Use the arg: '-a <OrgName>'")
+
+    if is_empty(__entity.project):
+        help_info()
+        raise ValueError("project is missing!! Use the arg: '-b <Project>'")
 
 
 def help_info():
@@ -127,7 +133,7 @@ def help_info():
                   "           -o/--override : override_identifier\n"
                   "           -n/--notifier : notifier_identifier\n"
                   "           -i/--pullrequest : PullRequest id (required)"
-                  "           -t/--type : android/ios (required)\n"
+                  "           -t/--type : flags"
                   "           -v/--verbose : prints debug log\n"
                   "           -h/--help : print this info\n"
 
