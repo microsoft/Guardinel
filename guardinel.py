@@ -131,9 +131,9 @@ def help_info():
                   "           -v/--verbose : prints debug log\n"
                   "           -h/--help : print this info\n"
 
-                  "           -a/--org : Azure DevOps Organisation (default:domoreexp)\n"
-                  "           -b/--project : Azure DevOps Project (default:Teamspace)\n"
-                  "           -c/--adoversion : Azure DevOps api_endpoint version (default: 6.0)\n"
+                  "           -a/--org : Azure DevOps Organisation \n"
+                  "           -b/--project : Azure DevOps Project \n"
+                  "           -c/--adoversion : Azure DevOps api_endpoint version \n"
                   "           -d/--user key : Azure devops User Key (required)\n"
                   "           -e/--user id : Azure devops User id (required)\n"
                   "           -f/--approver_key"

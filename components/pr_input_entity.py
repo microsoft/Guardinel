@@ -20,7 +20,7 @@ class PullRequestEntity(InputEntity):
     """
     __name = 'PullRequestEntity'
 
-    def __init__(self, org='domoreexp', proj='Teamspace', version='6.0'):
+    def __init__(self, org, proj, version='6.0'):
         self.pr_num = None
         self.pat = None
         self.user_id = None
@@ -50,7 +50,6 @@ class PullRequestEntity(InputEntity):
         return self.__name
 
     def pr_link(self):
-        # Ex: 'https://domoreexp.visualstudio.com/Teamspace/_git/SkypeSpaces-Android/pullrequest/380697'
         _pr_link = 'https://{}.visualstudio.com/{}/_git/{}/pullrequest/{}' \
             .format(self.org, self.project, self.repo(), self.pr_num)
         return _pr_link
@@ -122,9 +121,6 @@ class PullRequestEntity(InputEntity):
         {
             '1995246': "Bug", '2995231': "Feature", '1795245': "Task"
         }
-
-        For the list of possible field_name keys , call the api endpoint below with a work item id:
-        https://dev.azure.com/domoreexp/_apis/wit/workItems/<work_item_id>
 
         Note: If field doesn't exist in the work item, returns a map where work item is mapped to FIELD_NOT_FOUND
         """
