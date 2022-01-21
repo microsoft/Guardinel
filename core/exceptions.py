@@ -1,7 +1,7 @@
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT License.
 
-class PolicyError(Exception):
+class GuardinelError(Exception):
     """
     Parent error class for all the exceptions thrown by the system
     """
@@ -13,7 +13,7 @@ class PolicyError(Exception):
         self.suggestion = suggestion
 
 
-class APICallFailedError(PolicyError):
+class APICallFailedError(GuardinelError):
     """
     Exception thrown when call to an API endpoint fails
     """
@@ -23,7 +23,7 @@ class APICallFailedError(PolicyError):
         self.suggestion = 'Could be an intermittent issue. Please re-queue the gate again after an hour.'
 
 
-class MetricsError(PolicyError):
+class MetricsError(GuardinelError):
     """ Parent class for all metrics error """
     pass
 

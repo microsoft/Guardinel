@@ -5,7 +5,7 @@ import traceback
 from abc import abstractmethod, ABC
 
 from core.utils.constants import Constants
-from core.exceptions import PolicyError
+from core.exceptions import GuardinelError
 from core.interfaces.task import Task
 from core.utils.helper import get_value
 from core.utils.map import resources
@@ -43,7 +43,7 @@ class Action(Task, ABC):
                                    .format(self.name(), status, Constants.NOTIFY))
                 action_result['status'] = Constants.NOTIFY
 
-        except PolicyError as e:
+        except GuardinelError as e:
             self.logger().error(self.__tag, traceback.format_exc())
             return self.result(Constants.NOTIFY, error=e)
 
