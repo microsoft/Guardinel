@@ -31,22 +31,22 @@ Generate PAT following instructions mentioned [here](https://docs.microsoft.com/
 ## Execution 
 
 ### Pycharm
-- On PyCharm navigate to automation -> compliance -> policy_checker.py
-- Then right-click and Run 'policy_checker' or Click on the green button next to the main in the policy_checker.py
-- you will be able to see a policy_checker configuration, click on it and then Edit Configurations.    
+- On PyCharm, load the repository and open guardinel.py
+- Then right-click and Run 'guardinel.py' or Click on the green button next to the main in the guardinel.py
+- you will be able to see a guardinel configuration, click on it and then Edit Configurations.    
 - inside Edit Configurations dialog, set the parameters to the following:
 ``` 
--p policy_name -d <YOUR_DOMOREXP_PAT> -i <PR_NUM> -t android/ios
+guardinel.py -p policy_name -d <YOUR_DOMOREXP_PAT> -i <PR_NUM>
 ```
 
 ### Command line
 You can invoke the script in the format below:
 ```
-python3 ./release-velocity/automation/compliance/policy_checker.py -p policy_name -d <YOUR_DOMOREXP_PAT> -i <PR_NUM> -t android/ios
+python3 ./release-velocity/automation/compliance/guardinel.py -p policy_name -d <YOUR_DOMOREXP_PAT> -i <PR_NUM>
 ```
 
 ## Execution flow
-1. Guardinel is invoked using a driver script (policy_checker.py) to which we will be passing a set of policies/actions to execute. Driver script will build a config object using the cmdline params
+1. Guardinel is invoked using a driver script (guardinel.py) to which we will be passing a set of policies/actions to execute. Driver script will build a config object using the cmdline params
 2. ConcurrentExecutor will evaluate all the overrides attached to the policies/actions and retains the value until the Guardinel execution is completed
 3. ConcurrentExecutor will execute the Policy/Action in threads. Each thread will 
      - check if any of the overrides is evaluated to true. If Yes, return resuls as OVERRIDEN
