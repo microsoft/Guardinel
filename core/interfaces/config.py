@@ -13,8 +13,8 @@ class Config(ABC):
     """
     __logger = resources.get('LOGGER')
 
-    def __init__(self, class_map):
-        self.class_map = class_map
+    def __init__(self, instances_map):
+        self.instances_map = instances_map
 
     @abstractmethod
     def get_tasks(self):
@@ -44,10 +44,10 @@ class ConfigBuilder(ABC):
     __logger = resources.get('LOGGER')
 
     def __init__(self):
-        self.__class_map = None
+        self.instances_map = None
 
-    def with_class_map(self, class_map):
-        self.__class_map = class_map
+    def with_instances_map(self, instances_map):
+        self.instances_map = instances_map
         return self
 
     @abstractmethod

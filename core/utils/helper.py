@@ -4,7 +4,7 @@
 # Holds the util functions used by both core and guardinel
 
 
-def get_values(self, values_map, names: list):
+def get_values(values_map, names: list):
     """
     Returns a list of values identified by the given names from the values map
     """

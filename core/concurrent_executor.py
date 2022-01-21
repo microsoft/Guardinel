@@ -116,7 +116,7 @@ class ConcurrentExecutor:
             return
 
         callback_results = {}
-        for callback in get_values(self.config.class_map, task.callbacks()):
+        for callback in get_values(self.config.instance_map, task.callbacks()):
             self.__logger.info(self.__name, '[{}] Executing the action {} on result {}'
                                .format(task.name(), callback.name(), task_result))
             try:
