@@ -30,3 +30,7 @@ class Constants:
     # Flag that marks an unexpected error in the policy.
     # Gate will pass still to allow users to merge their changes
     UNEXPECTED_ERROR = 'UNEXPECTED_ERROR'
+
+    # Basic Keyword Identifier
+    OVERRIDES = "overrides"
+    CALLBACKS = "callbacks"

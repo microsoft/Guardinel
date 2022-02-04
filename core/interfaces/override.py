@@ -3,23 +3,21 @@
 
 from abc import ABC, abstractmethod
 
+from core.interfaces.config_entity import ConfigEntity
 from core.utils.map import resources
 
 
-class Override(ABC):
+class Override(ConfigEntity):
     """
     Abstract class that defines the basic methods to define an override
     Concurrent Executor would invoke the evaluate method to get the overrides' status
     """
-    __logger = resources.get('LOGGER')
+    def __init__(self, config=None):
+        super().__init__(config)
 
     @abstractmethod
     def evaluate(self, input_entity):
         raise NotImplementedError()
 
-    @abstractmethod
     def name(self):
         return self.__class__.__name__
-
-    def logger(self):
-        return self.__logger

@@ -3,39 +3,37 @@
 
 from abc import abstractmethod, ABC
 
+from core.interfaces.config_entity import ConfigEntity
 from core.utils.constants import Constants
-from core.utils.map import resources
 from core.utils.metrics import MetricsData
 
 
-class Task(ABC):
+class Task(ConfigEntity):
     """
     Abstract entity that defines the task to be executed concurrently
     Concurrent Executor would invoke the execute method concurrently to run the task
     """
-    __logger = resources.get('LOGGER')
 
-    def __init__(self):
+    def __init__(self, config=None):
+        super().__init__(config)
         self.metrics = MetricsData(self.name())
 
     @abstractmethod
     def execute(self, input_entity):
         raise NotImplementedError()
 
-    @abstractmethod
     def overrides(self):
-        raise NotImplementedError()
+        """
+        List of overrides that can override this task
+        """
+        return self.config_get(Constants.OVERRIDES)
 
     def callbacks(self):
         """
         List of callbacks that needs to be executed after a task is executed.
         Callbacks should implement the interface core.interfaces.Action
         """
-        return []
-
-    @abstractmethod
-    def name(self):
-        raise NotImplementedError()
+        return self.config_get(Constants.CALLBACKS)
 
     def get_overriders(self, override_evals: map):
         __overriders = []
@@ -45,9 +43,6 @@ class Task(ABC):
         self.__logger.info(self.name(), 'Applied overrides: {} and Succeeded Overrides: {}'
                            .format(self.overrides(), __overriders))
         return __overriders
-
-    def logger(self):
-        return self.__logger
 
     def set_metrics(self, metrics):
         self.metrics = metrics

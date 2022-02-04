@@ -8,7 +8,6 @@ from core.utils.constants import Constants
 from core.exceptions import GuardinelError
 from core.interfaces.task import Task
 from core.utils.helper import get_value
-from core.utils.map import resources
 
 
 class Action(Task, ABC):
@@ -23,7 +22,6 @@ class Action(Task, ABC):
     Action can throw an exception for failures which will be marked for NOTIFY status
 
     """
-    __logger = resources.get('LOGGER')
     __tag = 'Action Interface'
 
     def execute(self, input_entity):
@@ -53,12 +51,6 @@ class Action(Task, ABC):
     def execute_action(self, input_entity, task_result=None):
         """ This method will be invoked if the action is added as a callback to a policy"""
         raise NotImplementedError()
-
-    def name(self):
-        return self.__class__.__name__
-
-    def logger(self):
-        return self.__logger
 
     @staticmethod
     def accepted_statuses():
