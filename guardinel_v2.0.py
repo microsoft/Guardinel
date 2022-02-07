@@ -22,29 +22,29 @@ class Guardinel:
     default_config = 'guardinel.json'
 
     @staticmethod
-    def start(config_file):
+    def start(config_file, access_token):
         with open(config_file, encoding='utf-8') as f:
             config_json = json.load(f)
             if get_value(config_json, ["log_level"], "").lower() == 'debug':
                 resources.get('LOGGER').enable_debug()
 
-            config, entity = Guardinel.build_config_entity(config_json)
+            config, entity = Guardinel.build_config_entity(config_json, access_token)
             executor = ConcurrentExecutor(config, entity)
             return executor.start()
 
     @staticmethod
-    def build_config_entity(config_file):
+    def build_config_entity(config_file, access_token):
         config = Guardinel.build_config(config_file)
-        entity = Guardinel.build_entity(get_value(config_file, ["input"]))
+        entity = Guardinel.build_entity(get_value(config_file, ["input"]), access_token)
         return config, entity
 
     @staticmethod
-    def build_entity(input_config):
+    def build_entity(input_config, access_token):
         input_entity = PullRequestEntity()
         input_entity.pr_num = get_value(input_config, ["entity", "id"])
         input_entity.org = get_value(input_config, ["org"])
         input_entity.project = get_value(input_config, ["project"])
-        input_entity.pat = get_value(input_config, ["api", "token"])
+        input_entity.pat = access_token
         input_entity.ado_version = get_value(input_config, ["api", "version"])
 
         Guardinel.validate_entity(input_entity)
@@ -103,14 +103,15 @@ def help_info():
                   "Refer this wiki for the config file format")
 
 
-def parse_for_config_file(args_list, default):
+def parse_args(args_list, default):
     _config_file = default
+    _token = None
 
     # Options
-    options = "hf:"
+    options = "hc:t:"
 
     # Long options
-    long_options = ["help", "config="]
+    long_options = ["help", "config=", "token="]
 
     # Parsing argument
     arguments, values = getopt.getopt(args_list, options, long_options)
@@ -119,17 +120,20 @@ def parse_for_config_file(args_list, default):
         if currentArgument in ("-h", "--help"):
             help_info()
 
-        elif currentArgument in ("-f", "--config"):
+        elif currentArgument in ("-c", "--config"):
             _config_file = currentValue
 
-    return _config_file
+        elif currentArgument in ("-t", "--token"):
+            _token = currentValue
+
+    return _config_file, _token
 
 
 if __name__ == '__main__':
     # Remove 1st argument from the list of command line arguments
     argumentList = sys.argv[1:]
-    config_path = parse_for_config_file(argumentList, default=Guardinel.default_config)
-    results = Guardinel.start(config_path)
+    config_path, token = parse_args(argumentList, default=Guardinel.default_config)
+    results = Guardinel.start(config_path, token)
 
     __logger.debug(__tag, 'results: {}'.format(results))
 

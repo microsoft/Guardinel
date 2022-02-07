@@ -6,7 +6,7 @@
       "id": "449093"
     },
     "api": {
-      "token": "PAT",
+      "identifier": "AZURE_DEVOPS",
       "version": "6.0"
     }
   },
