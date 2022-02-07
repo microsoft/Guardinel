@@ -1,0 +1,60 @@
+{
+  "execute": {
+    "input": "449093",
+    "team": "domorexp",
+    "project": "Teamspace",
+    "global_overrides": [
+      "MyOverride2"
+    ],
+    "api": {
+      "ado": {
+        "token": "<pat>",
+        "version": "6.0"
+      }
+    },
+    "tasks": [],
+    "overrides": [],
+    "notifier": [],
+    "telemetry": []
+  },
+  "definitions": {
+    "tasks": {
+      "MyPolicy": {
+        "class": "hello_world_policy",
+        "config": {
+          "overrides": [
+            "MyOverride1"
+          ]
+        }
+      }
+    },
+    "overrides": {
+      "MyOverride1": {
+        "class": "hello_world_override",
+        "config": {
+          "param1": "test1"
+        }
+      },
+      "MyOverride2": {
+        "class": "hello_world_override",
+        "config": {
+          "param1": "test2"
+        }
+      }
+    },
+    "notifiers": {
+      "MyNotifier": {
+        "class": "terminal_notifier",
+        "config": {}
+      }
+    },
+    "telemetry": {
+      "MyNotifier": {
+        "class": "terminal_notifier",
+        "config": {
+          "token": "ramraj_token"
+        }
+      }
+    },
+  }
+}
