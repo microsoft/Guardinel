@@ -1,0 +1,23 @@
+{
+  "input": {
+    "org": "domoreexp",
+    "project": "Teamspace",
+    "entity": {
+      "id": "449093"
+    },
+    "api": {
+      "token": "PAT",
+      "version": "6.0",
+    }
+  },
+  "tasks": [
+    "hello_world_policy"
+  ],
+  "notifiers": [
+    "cmdline_notifier"
+  ],
+  "telemetry": [],
+  "telemetry_enabled": false,
+  "global_overrides": [],
+  "log_level": "DEBUG"
+}
