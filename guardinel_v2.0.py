@@ -41,14 +41,14 @@ class Guardinel:
     @staticmethod
     def build_entity(input_config):
         input_entity = PullRequestEntity()
-        input_entity.id = get_value(input_config, ["entity", "id"])
+        input_entity.pr_num = get_value(input_config, ["entity", "id"])
         input_entity.org = get_value(input_config, ["org"])
         input_entity.project = get_value(input_config, ["project"])
         input_entity.pat = get_value(input_config, ["api", "token"])
         input_entity.ado_version = get_value(input_config, ["api", "version"])
 
         Guardinel.validate_entity(input_entity)
-        return input_config
+        return input_entity
 
     @staticmethod
     def build_config(config):
