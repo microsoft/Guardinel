@@ -17,18 +17,24 @@ __logger = resources.get('LOGGER')
 __tag = 'Guardinel'
 
 
+class CmdlineInput:
+    def __init__(self):
+        self.config_path = None
+        self.access_token = None
+
+
 class Guardinel:
 
     default_config = 'guardinel.json'
 
     @staticmethod
-    def start(config_file, access_token):
-        with open(config_file, encoding='utf-8') as f:
+    def start(_cmdline_input):
+        with open(_cmdline_input.config_path, encoding='utf-8') as f:
             config_json = json.load(f)
             if get_value(config_json, ["log_level"], "").lower() == 'debug':
                 resources.get('LOGGER').enable_debug()
 
-            config, entity = Guardinel.build_config_entity(config_json, access_token)
+            config, entity = Guardinel.build_config_entity(config_json, _cmdline_input.access_token)
             executor = ConcurrentExecutor(config, entity)
             return executor.start()
 
@@ -104,8 +110,9 @@ def help_info():
 
 
 def parse_args(args_list, default):
-    _config_file = default
-    _token = None
+    cmdline_input = CmdlineInput()
+    cmdline_input.config_path = default
+    cmdline_input.access_token = None
 
     # Options
     options = "hc:t:"
@@ -121,19 +128,19 @@ def parse_args(args_list, default):
             help_info()
 
         elif currentArgument in ("-c", "--config"):
-            _config_file = currentValue
+            cmdline_input.config_path = currentValue
 
         elif currentArgument in ("-t", "--token"):
-            _token = currentValue
+            cmdline_input.access_token = currentValue
 
-    return _config_file, _token
+    return cmdline_input
 
 
 if __name__ == '__main__':
     # Remove 1st argument from the list of command line arguments
     argumentList = sys.argv[1:]
-    config_path, token = parse_args(argumentList, default=Guardinel.default_config)
-    results = Guardinel.start(config_path, token)
+    cmdline_input = parse_args(argumentList, default=Guardinel.default_config)
+    results = Guardinel.start(cmdline_input)
 
     __logger.debug(__tag, 'results: {}'.format(results))
 
