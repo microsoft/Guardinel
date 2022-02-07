@@ -110,9 +110,9 @@ def help_info():
 
 
 def parse_args(args_list, default):
-    cmdline_input = CmdlineInput()
-    cmdline_input.config_path = default
-    cmdline_input.access_token = None
+    cmdline_in = CmdlineInput()
+    cmdline_in.config_path = default
+    cmdline_in.access_token = None
 
     # Options
     options = "hc:t:"
@@ -128,12 +128,12 @@ def parse_args(args_list, default):
             help_info()
 
         elif currentArgument in ("-c", "--config"):
-            cmdline_input.config_path = currentValue
+            cmdline_in.config_path = currentValue
 
         elif currentArgument in ("-t", "--token"):
-            cmdline_input.access_token = currentValue
+            cmdline_in.access_token = currentValue
 
-    return cmdline_input
+    return cmdline_in
 
 
 if __name__ == '__main__':
